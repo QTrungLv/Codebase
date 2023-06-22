@@ -1,0 +1,15 @@
+
+# .env.*
+# /node_modules
+# /vendor
+# .gitignore
+# .gitattributes
+# Dockerfile
+# .dockerignore
+# docker-compose.yml
+# /.vscode
+
+# # Ignore Laravel specific files and directories
+# /tests
+
+
