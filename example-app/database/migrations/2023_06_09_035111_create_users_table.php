@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::create('users', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->string('name');
-        //     $table->string('username');
-        //     $table->string('password');
-        //     $table->timestamp('created_at')->useCurrent();
-        //     $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
-        // });
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('username');
+            $table->string('password');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
+        });
     }
 
     /**

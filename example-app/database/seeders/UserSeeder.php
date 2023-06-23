@@ -14,23 +14,23 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        //
-        // $data = [
-        //     [
-        //         'name' => 'Nguyen',
-        //         'username' => 'nguyen01',
-        //         'password' => 'nguyenpassword01',
-        //         'created_at' => now(),
-        //         'updated_at' => now()
-        //     ],
-        //     [
-        //         'name' => 'Quang',
-        //         'username' => 'quang02',
-        //         'password' => 'quangpassword02',
-        //         'created_at' => now(),
-        //         'updated_at' => now()
-        //     ]
-        // ];
-        // DB::table('users')->insert($data);
+        
+        $data = [
+            [
+                'name' => 'Nguyen',
+                'username' => 'nguyen01',
+                'password' => 'nguyenpassword01',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'Quang',
+                'username' => 'quang02',
+                'password' => 'quangpassword02',
+                'created_at' => now(),
+                'updated_at' => now()
+            ]
+        ];
+        DB::table('users')->insert($data);
     }
 }

@@ -18,10 +18,5 @@ Route::get('/', function () {
     return view('greeting', ['name' => 'James']);
 });
 
-Route::prefix('post')->group(function () {
-    Route::get('/', [PostController::class, 'getData']);
-    Route::get('/{id}', [PostController::class, 'getDataById']);
-    Route::post('/', [PostController::class, 'create']);
-    Route::put('/{id}', [PostController::class, 'update']);
-    Route::delete('/{id}', [PostController::class, 'delete']);
-});
+
+
