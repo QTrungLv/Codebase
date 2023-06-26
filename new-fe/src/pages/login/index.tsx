@@ -1,6 +1,6 @@
 import { AiFillGoogleCircle } from 'react-icons/ai'
 
-export default function Login(){
+export default function Login() {
     return (
         <div className="flex align-middle justify-center mx-10">
             <div className="p-6">

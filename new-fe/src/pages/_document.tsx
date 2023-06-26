@@ -9,7 +9,7 @@ export default function Document() {
       <body>
         <Header />
         <Main />
-        
+
         <NextScript />
         <Footer />
       </body>
