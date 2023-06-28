@@ -11,10 +11,12 @@ import { create, show, update, destroy } from "@/services/PostServices";
 
 export default function CodeBase() {
 
-    const [details, setDetails] = useState<PostInterface[]>([])
-    const [showForm, setShowForm] = useState<boolean>(false)
     const [title, setTitle] = useState<string>("")
     const [description, setDescription] = useState<string>("");
+
+    const [details, setDetails] = useState<PostInterface[]>([])
+    const [showForm, setShowForm] = useState<boolean>(false)
+
     const [type, setType] = useState<number>(0)
     const [idPost, setIdPost] = useState<number>(-1)
 
@@ -27,21 +29,24 @@ export default function CodeBase() {
             await show((res: any) => {
                 if (res.success) {
 
-                    setDetails(res.data)
+                    setDetails([...res.data])
+
                 } else {
                     console.log(res)
                 }
             })
         }
         getPost()
+
     }, [])
 
-    const onEdit = async (id: number) => {
+    const onEdit = (id: number) => {
         setIdPost(id)
         setType(2)
         setTitle(details[id - 1].title);
         setDescription(details[id - 1].description);
         setShowForm(true);
+        console.log(id + " " + type)
     }
 
     const onDelete = (id: number) => {
@@ -50,7 +55,8 @@ export default function CodeBase() {
         setTitle(details[id - 1].title);
         setDescription(details[id - 1].description);
         setShowForm(true);
-        setIdPost(-1);
+        console.log(id + " " + idPost)
+
     }
 
     const onCancel = () => {
@@ -58,6 +64,7 @@ export default function CodeBase() {
         setDescription('')
         setShowForm(false);
         setType(0);
+        setIdPost(-1);
     }
 
     const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
@@ -68,9 +75,10 @@ export default function CodeBase() {
         setDescription(event.target.value);
     }
 
-    const handleFormSubmit = async (event: ChangeEvent<HTMLInputElement>): Promise<void> => {
-        //event.preventDefault()
+    const handleFormSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
+        event.preventDefault();
         switch (type) {
+            //Create
             case 0: {
                 const data = {
                     title: title,
@@ -86,9 +94,13 @@ export default function CodeBase() {
                     }
                 })
             };
+
+
             case 1: {
 
             };
+
+            //Update
             case 2: {
                 const data = {
                     title: title,
@@ -104,6 +116,8 @@ export default function CodeBase() {
                     }
                 })
             };
+
+            //Delete
             case 3: {
 
                 await destroy(idPost, (res: any) => {
@@ -119,11 +133,11 @@ export default function CodeBase() {
 
             }
         }
+
     }
 
     return (
         <div className="p-10">
-
             {
                 showForm ? (
                     <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-400 bg-opacity-80">
@@ -148,9 +162,8 @@ export default function CodeBase() {
 
                             <div className="flex justify-between mt-3">
                                 <button
-                                    type="submit"
                                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                    onClick={() => handleFormSubmit}
+                                    onClick={handleFormSubmit}
                                 >{typeCRUD[type]}</button>
                                 <button onClick={onCancel} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
                             </div>

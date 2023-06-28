@@ -13,5 +13,7 @@ class Post extends Model
     //primary key
     protected $primaryKey = 'id';
 
+
+
     use HasFactory;
 }

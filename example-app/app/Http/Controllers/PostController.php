@@ -71,8 +71,6 @@ class PostController extends Controller
             $title = $request['title'];
             $description = $request['description'];
 
-
-
             DB::table('posts')->where('id', $id)->update([
                 'title' => $title,
                 'description' => $description
