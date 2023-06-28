@@ -8,6 +8,7 @@ import axios from "axios";
 import { AiOutlinePlus, AiOutlineEdit, AiFillDelete } from 'react-icons/ai'
 import { typeCRUD } from "@/utils/types";
 import { create, show, update, destroy } from "@/services/PostServices";
+import NotifySuccess from "@/components/containers/NotifySuccess";
 
 export default function CodeBase() {
 
@@ -24,39 +25,42 @@ export default function CodeBase() {
         setShowForm(true)
     };
 
+    async function getPost() {
+        await show((res: any) => {
+            if (res.success) {
+                setDetails([...res.data])
+            } else {
+                console.log(res)
+            }
+        })
+    }
+
     useEffect(() => {
-        async function getPost() {
-            await show((res: any) => {
-                if (res.success) {
-
-                    setDetails([...res.data])
-
-                } else {
-                    console.log(res)
-                }
-            })
-        }
         getPost()
-
     }, [])
+
+    const setInfo = (id: number) => {
+        for (var i = 0; i < details.length; i++) {
+            if (details[i].id === id) {
+                setTitle(details[i].title)
+                setDescription(details[i].description)
+                return;
+            }
+        }
+    }
 
     const onEdit = (id: number) => {
         setIdPost(id)
         setType(2)
-        setTitle(details[id - 1].title);
-        setDescription(details[id - 1].description);
+        setInfo(id)
         setShowForm(true);
-        console.log(id + " " + type)
     }
 
     const onDelete = (id: number) => {
         setIdPost(id)
         setType(3)
-        setTitle(details[id - 1].title);
-        setDescription(details[id - 1].description);
-        setShowForm(true);
-        console.log(id + " " + idPost)
-
+        setInfo(id)
+        setShowForm(true)
     }
 
     const onCancel = () => {
@@ -84,15 +88,17 @@ export default function CodeBase() {
                     title: title,
                     description: description
                 }
-
                 await create(data, (res: any) => {
-                    if (res.success) {
-                        console.log(res.data)
-                        //setDetails(res.data)
-                    } else {
-                        console.log(res)
+                    if (res) {
+                        if (res.success) {
+                            onCancel()
+                            getPost()
+                        } else {
+                            console.log(res)
+                        }
                     }
                 })
+                return;
             };
 
 
@@ -102,35 +108,43 @@ export default function CodeBase() {
 
             //Update
             case 2: {
+                console.log("Update")
                 const data = {
                     title: title,
                     description: description
                 }
-
                 await update(data, idPost, (res: any) => {
-                    if (res.success) {
-                        console.log(res.data)
-                        //setDetails(res.data)
-                    } else {
-                        console.log(res)
+                    if (res) {
+                        if (res.success) {
+                            onCancel()
+                            getPost()
+                        } else {
+                            console.log("Error")
+                            console.log(res)
+                        }
                     }
                 })
+                return;
             };
 
             //Delete
             case 3: {
-
+                console.log("Delete")
                 await destroy(idPost, (res: any) => {
-                    if (res.success) {
-                        console.log(res.data)
-                        //setDetails(res.data)
-                    } else {
-                        console.log(res)
+                    if (res) {
+                        if (res.success) {
+                            onCancel()
+                            getPost()
+                        } else {
+                            console.log(res)
+                        }
                     }
                 })
+                return;
             };
             default: {
-
+                console.log("Default")
+                return;
             }
         }
 

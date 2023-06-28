@@ -2,7 +2,6 @@ import axios from "axios";
 
 
 export async function create(data: Object, callback: any): Promise<any> {
-    console.log(data)
     axios.post(process.env.URL + "/api/post", data)
         .then((res) => {
             return callback(res.data);
@@ -23,9 +22,8 @@ export async function show(callback: any) {
 }
 
 export async function update(data: Object, id: number, callback: any): Promise<any> {
-    console.log(data)
-    console.log(id)
-    axios.put(process.env.URL + "/api/post/" + id, data)
+    axios
+        .put(process.env.URL + "/api/post/" + id, data)
         .then((res) => {
             return callback(res.data);
         })
@@ -35,8 +33,8 @@ export async function update(data: Object, id: number, callback: any): Promise<a
 }
 
 export async function destroy(id: number, callback: any): Promise<any> {
-    console.log(id)
-    axios.delete(process.env.URL + "/api/post/" + id)
+    axios
+        .delete(process.env.URL + "/api/post/" + id)
         .then((res) => {
             return callback(res.data);
         })

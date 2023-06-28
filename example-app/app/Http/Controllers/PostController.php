@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\PostRepository;
 use App\Services\Services;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -10,98 +11,89 @@ use Exception;
 
 class PostController extends Controller
 {
+
+    private PostRepository $postRepository;
+    private Services $services;
+
+    public function __construct(PostRepository $postRepository, Services $services)
+    {
+        $this->postRepository = $postRepository;
+        $this->services = $services;
+    }
+
+
     //
     function getData(Request $request)
     {
-        $post = DB::table('posts')->get();
-        return response()->json([
-            'success' => true,
-            'data' => $post
-        ]);
+        $post = $this->postRepository->get();
+
+        return $this->services->sendResponse($post);
     }
 
     function getDataById(Request $request, string $id)
     {
         try {
-            $user = DB::table('posts')->find($id);
+            $user = $this->postRepository->getById($id);
+
             if ($user) {
-                return response()->json([
-                    'success' => true,
-                    'data' => $user
-                ]);
+                return $this->services->sendResponse($user);
             }
-            return response()->json([
-                'success' => false,
-                'message' => 'Post not exist',
-            ], 400);
+            return $this->services->sendError('Post not exist', 400);
         } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Post not exist',
-            ], 400);
+            return $this->services->sendError('Post not exist', 400);
         }
     }
 
     function create(Request $request)
     {
         try {
-            $title = $request['title'];
-            $description = $request['description'];
+            $data = [
+                'title' => $request['title'],
+                'description' => $request['description']
+            ];
 
-            $id = DB::table('posts')->insertGetId([
-                'title' => $title,
-                'description' => $description
-            ]);
-            $post = DB::table('posts')->find($id);
-            return response()->json([
-                'success' => true,
-                'data' => $post
-            ]);
+            $post = $this->postRepository->create($data);
+
+            return $this->services->sendResponse($post);
         } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Server Error',
-            ]);
+
+            return $this->services->sendError('Server Error', 400);
         }
     }
 
     function update(Request $request, string $id)
     {
         try {
-            $title = $request['title'];
-            $description = $request['description'];
+            $data = [
+                'title' => $request['title'],
+                'description' => $request['description']
+            ];
 
-            DB::table('posts')->where('id', $id)->update([
-                'title' => $title,
-                'description' => $description
-            ]);
-            $post = DB::table('posts')->find($id);
-            return response()->json([
-                'success' => true,
-                'data' => $post,
-            ]);
+            $post = $this->postRepository->update($data, $id);
+
+            if ($post) {
+                return $this->services->sendResponse($post);
+            }
+
+            return $this->services->sendError('Post not exist', 400);
         } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Server Error',
-            ]);
+
+            return $this->services->sendError('Server Error', 400);
         }
     }
 
     function delete(Request $request, string $id)
     {
         try {
-            $post = DB::table('posts')->find($id);
-            DB::table('posts')->where('id', $id)->delete();
-            return response()->json([
-                'success' => true,
-                'data' => $post
-            ]);
+            $post = $this->postRepository->delete($id);
+
+            if ($post) {
+                return $this->services->sendResponse($post);
+            }
+
+            return $this->services->sendError('Post not exist', 400);
         } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Server Error',
-            ]);
+            return $this->services->sendError('Server Error', 400);
         }
     }
 }
