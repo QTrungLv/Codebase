@@ -3,12 +3,11 @@
 import { ChangeEvent, Suspense, useEffect, useRef, useState } from "react";
 import Loading from "./loading";
 import Post from "@/components/Post";
-import { PostInterface } from "@/interface/Post";
+import { PostInterface } from "@/models/Post";
 import axios from "axios";
 import { AiOutlinePlus, AiOutlineEdit, AiFillDelete } from 'react-icons/ai'
 import { typeCRUD } from "@/utils/types";
 import { create, show, update, destroy } from "@/services/PostServices";
-import NotifySuccess from "@/components/containers/NotifySuccess";
 
 export default function CodeBase() {
 
@@ -117,7 +116,7 @@ export default function CodeBase() {
                     if (res) {
                         if (res.success) {
                             onCancel()
-                            getPost()
+                            getPost()   
                         } else {
                             console.log("Error")
                             console.log(res)
