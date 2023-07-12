@@ -116,7 +116,7 @@ export default function CodeBase() {
                     if (res) {
                         if (res.success) {
                             onCancel()
-                            getPost()   
+                            getPost()
                         } else {
                             console.log("Error")
                             console.log(res)
@@ -152,7 +152,7 @@ export default function CodeBase() {
     return (
         <div className="p-10">
             {
-                showForm ? (
+                showForm && (
                     <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-400 bg-opacity-80">
                         <form className="border-2 border-black border-solid p-10 bg-gray-300 text-white">
                             <h1 className="text-center font-bold text-2xl">POST INFO</h1>
@@ -182,39 +182,25 @@ export default function CodeBase() {
                             </div>
                         </form>
                     </div>
-                ) : <></>
+                )
             }
 
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-col-1 gap-4">
-                {details ? details.map((detail: any) => (
+                {details && details.map((detail: any) => (
                     <div
                         key={detail.id}
                         className="rounded border-2 border-black border-solid flex p-4 m-6  flex-col "
                     >
-                        <Post details={detail} />
-                        <div className="flex flex-row justify-end mt-2">
-                            <button
-                                className="text-green-500 border-r-2 border-solid flex-row flex items-center justify-center pr-2"
-                                onClick={() => onEdit(detail.id)}
-                            >
-                                <AiOutlineEdit />
-                                Edit
-                            </button>
-                            <button
-                                className="text-red-500 flex items-center justify-center pl-2"
-                                onClick={() => onDelete(detail.id)}
-                            >
-                                <AiFillDelete />
-                                Delete
-                            </button>
-                        </div>
+                        <Suspense fallback={<Loading />} >
+                            <Post detail={detail} onEdit={onEdit} onDelete={onDelete} />
+                        </Suspense>
+
                     </div>
-                )) : <Suspense fallback={<Loading />} />}
+                ))}
                 <div className="flex justify-center align-middle p-4">
                     <button className="rounded border-2 border-black border-solid flex m-10 justify-center items-center p-5 " onClick={handleButtonClick}>
                         <AiOutlinePlus size={40} />
                     </button>
-
                 </div>
             </div>
 

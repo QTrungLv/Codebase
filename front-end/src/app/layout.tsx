@@ -2,6 +2,7 @@ import Footer from '@/containers/Footer'
 import Header from '@/containers/Header'
 import { Inter } from 'next/font/google'
 import '@/styles/globals.css'
+import Error from './error'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -22,7 +23,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-        </body>
+      </body>
     </html>
   )
 }

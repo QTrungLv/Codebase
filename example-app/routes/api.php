@@ -42,20 +42,20 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('/google/callback', function () {
         $user = Socialite::driver('google')->user();
-        // $user = User::updateOrCreate([
-        //     'github_id' => $user->id,
-        // ], [
-        //     'name' => $user->name,
-        //     'email' => $user->email,
-        //     'github_token' => $user->token,
-        //     'github_refresh_token' => $user->refreshToken,
-        // ]);
+        $user = DB::table('auth')::updateOrCreate([
+            'id' => $user->id,
+        ], [
+            'name' => $user->name,
+            'email' => $user->email,
+            'avatar' => $user->avatar,
+            'token' => $user->token,
+        ]);
 
         //Auth::login($user);
 
-        return response()->json([
-            'user' => $user
-        ]);
+        return response()->json(
+            $user
+        );
         // $user->token
     });
 });

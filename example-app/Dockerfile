@@ -34,7 +34,7 @@ RUN php artisan key:generate
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 # Expose the container port
-EXPOSE 80
+EXPOSE 8000
 
 # Start the Apache server
 CMD ["apache2-foreground"]
